@@ -59,15 +59,36 @@ app.post("/api/v1/restaurants/", async (req, res) => {
   }
 });
 
-app.put("/api/v1/restaurants/:id", (req, res) => {
-  console.log(req.params.id);
+app.put("/api/v1/restaurants/:id", async (req, res) => {
+  try {
+    const name = req.body.name;
+    const location = req.body.location;
+    const price_range = req.body.price_range;
+    const id = req.params.id;
+    console.log(id);
+    const results = await db.query(
+      "UPDATE restaurants SET name=$1,location=$2,price_range=$3 WHERE id=$4 returning *",
+      [name, location, price_range, id]
+    );
+    res.status(201).json({
+      status: results.rows[0],
+    });
+    console.log(results);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
-app.delete("/api/v1/restaurants/:id", (req, res) => {
-  console.log(req.params.id);
-  res.status(204).json({
-    status: "succes",
-  });
+app.delete("/api/v1/restaurants/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const results = await db.query("DELETE FROM restaurants WHERE id=$1", [id]);
+    res.status(204).json({
+      status: "succes",
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const port = process.env.PORT;
