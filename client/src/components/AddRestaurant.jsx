@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import api from "../apis/api";
 import { RestaurantsContext } from "../context/RestaurantsContext";
+import "./css/style.css";
 
 function AddRestaurant() {
   const { addRestaurants } = useContext(RestaurantsContext);
