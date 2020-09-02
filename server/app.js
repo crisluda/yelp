@@ -12,7 +12,7 @@ app.use(cors())
 
 app.get("/api/v1/restaurants", async (req, res) => {
   try {
-    const results = await db.query("SELECT * FROM restaurants");
+    const results = await db.query("SELECT * FROM restaurants order by price_range desc");
     // console.log(results);
     res.status(200).json({
       status: "succes",
@@ -35,7 +35,7 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
     res.status(200).json({
       status: "success",
       data: {
-        restaurant: results.rows[0],
+        restaurants: results.rows[0],
       },
     });
   } catch (error) {
@@ -78,7 +78,10 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
       [name, location, price_range, id]
     );
     res.status(201).json({
-      status: results.rows[0],
+      status: "succes",
+      data: {
+        restaurant: results.rows[0],
+      }
     });
     // console.log(results);
   } catch (error) {
