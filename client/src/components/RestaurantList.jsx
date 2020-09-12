@@ -13,13 +13,14 @@ function RestaurantList(props) {
         const response = await api.get("/");
         setRestaurants(response.data.data.restaurants);
       } catch (error) {
-        console.log("api", error);
+        // console.log("api", error);
       }
     };
     apicall();
   }, []);
 
-  async function handleDelete(id) {
+  async function handleDelete(e, id) {
+    e.stopPropagation();
     try {
       const response = await api.delete(`/${id}`);
       setRestaurants(
@@ -32,8 +33,13 @@ function RestaurantList(props) {
       console.log(error);
     }
   }
-  function handleUpdate(id) {
+  function handleUpdate(e, id) {
+    e.stopPropagation();
     history.push(`/restaurants/${id}/update`);
+  }
+
+  function handleRestaurantSelect(id) {
+    history.push(`/restaurant/${id}`);
   }
 
   return (
@@ -53,14 +59,17 @@ function RestaurantList(props) {
           {restaurants &&
             restaurants.map((restaurant) => {
               return (
-                <tr key={restaurant.id}>
+                <tr
+                  onClick={() => handleRestaurantSelect(restaurant.id)}
+                  key={restaurant.id}
+                >
                   <td>{restaurant.name}</td>
                   <td>{restaurant.location}</td>
                   <td>{"$".repeat(restaurant.price_range)}</td>
                   <td>reviews</td>
                   <td>
                     <button
-                      onClick={() => handleUpdate(restaurant.id)}
+                      onClick={(e) => handleUpdate(e, restaurant.id)}
                       className="btn btn-warning"
                     >
                       Update
@@ -68,7 +77,7 @@ function RestaurantList(props) {
                   </td>
                   <td>
                     <button
-                      onClick={() => handleDelete(restaurant.id)}
+                      onClick={(e) => handleDelete(e, restaurant.id)}
                       className="btn btn-danger"
                     >
                       Delete
