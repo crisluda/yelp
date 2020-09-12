@@ -46,6 +46,7 @@ function AddRestaurant() {
               name=""
               id=""
               placeholder="location"
+              requiredTxt
             />
           </div>
           <div className="col">
