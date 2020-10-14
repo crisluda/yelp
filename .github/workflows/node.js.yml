@@ -22,10 +22,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+    commands:
+    - unset CI
+    with:
+      node-version: ${{ matrix.node-version }}
     - run: npm i
-      env:
-        CI: ""
     - run: npm run build --if-present
     - run: npm test
